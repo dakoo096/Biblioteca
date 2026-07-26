@@ -1,0 +1,1 @@
+-- Archivo schema.sql vacio para evitar conflictos de inicialización de SQL

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+
+    <!-- Header & Navigation Bar Fragment -->
+    <nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-custom">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-3" th:href="@{/catalogo}">
+                <div class="brand-logo-wrapper">
+                    <i class="bi bi-bank"></i>
+                </div>
+                <div>
+                    <span class="brand-title d-block">Biblioteca SaaS</span>
+                    <small class="text-muted d-block" style="font-size: 0.75rem; margin-top: -3px;">Sistema de Gestión Bibliotecaria</small>
+                </div>
+            </a>
+
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <div class="navbar-nav mx-auto gap-1">
+                    <!-- Admin Links -->
+                    <a sec:authorize="hasAuthority('ROLE_ADMIN')" th:href="@{/dashboard}" class="nav-link-custom"><i class="bi bi-grid-1x2-fill"></i> Dashboard</a>
+                    <a th:href="@{/catalogo}" class="nav-link-custom"><i class="bi bi-book-fill"></i> Catálogo</a>
+                    <a th:href="@{/libros}" sec:authorize="hasAuthority('ROLE_ADMIN')" class="nav-link-custom"><i class="bi bi-journal-bookmark-fill"></i> Gestionar Libros</a>
+                    <a th:href="@{/prestamos}" class="nav-link-custom"><i class="bi bi-arrow-left-right"></i> Préstamos</a>
+                    <a th:href="@{/reservas}" class="nav-link-custom"><i class="bi bi-bookmark-star-fill"></i> Reservas</a>
+                    <a th:href="@{/mi-biblioteca}" sec:authorize="hasAuthority('ROLE_LECTOR')" class="nav-link-custom"><i class="bi bi-person-workspace"></i> Mi Biblioteca</a>
+                    <a th:href="@{/usuarios}" sec:authorize="hasAuthority('ROLE_ADMIN')" class="nav-link-custom"><i class="bi bi-people-fill"></i> Usuarios</a>
+                </div>
+
+                <!-- Right Profile & Security Controls -->
+                <div class="d-flex align-items-center gap-3 mt-3 mt-lg-0">
+                    
+                    <!-- Dark Mode Toggle Button -->
+                    <button id="themeToggleBtn" class="btn btn-sm btn-outline-secondary rounded-pill px-3 py-1 d-flex align-items-center gap-1" title="Cambiar Tema">
+                        <i class="bi bi-moon-stars-fill"></i> <span id="themeToggleText" class="d-none d-sm-inline">Oscuro</span>
+                    </button>
+
+                    <!-- Authenticated User Profile -->
+                    <div sec:authorize="isAuthenticated()" class="dropdown">
+                        <button class="btn btn-light rounded-pill border d-flex align-items-center gap-2 px-3 py-1 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle fs-5 text-primary"></i>
+                            <span sec:authentication="name" class="fw-semibold text-dark small">Usuario</span>
+                            <span sec:authorize="hasAuthority('ROLE_ADMIN')" class="badge bg-danger rounded-pill" style="font-size: 0.65rem;">Admin</span>
+                            <span sec:authorize="hasAuthority('ROLE_LECTOR')" class="badge bg-success rounded-pill" style="font-size: 0.65rem;">Lector</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2" style="border-radius: var(--radius-md);">
+                            <li><a sec:authorize="hasAuthority('ROLE_LECTOR')" class="dropdown-menu-item dropdown-item d-flex align-items-center gap-2 py-2" th:href="@{/mi-biblioteca}"><i class="bi bi-person me-1"></i> Mi Panel de Lector</a></li>
+                            <li><a sec:authorize="hasAuthority('ROLE_ADMIN')" class="dropdown-menu-item dropdown-item d-flex align-items-center gap-2 py-2" th:href="@{/dashboard}"><i class="bi bi-speedometer2 me-1"></i> Panel de Administración</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form th:action="@{/logout}" method="post" class="d-inline">
+                                    <button type="submit" class="dropdown-item text-danger d-flex align-items-center gap-2 py-2 w-100"><i class="bi bi-box-arrow-right me-1"></i> Cerrar Sesión</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Script for Theme Toggle & Toast Auto-Dismiss in navbar -->
+        <script>
+            (function() {
+                function initNavbar() {
+                    const themeBtn = document.getElementById('themeToggleBtn');
+                    if (themeBtn) {
+                        function applyTheme(theme) {
+                            if (theme === 'dark') {
+                                document.documentElement.setAttribute('data-theme', 'dark');
+                                localStorage.setItem('theme', 'dark');
+                                themeBtn.innerHTML = '<i class="bi bi-sun-fill text-warning"></i> <span id="themeToggleText" class="d-none d-sm-inline">Claro</span>';
+                            } else {
+                                document.documentElement.removeAttribute('data-theme');
+                                localStorage.setItem('theme', 'light');
+                                themeBtn.innerHTML = '<i class="bi bi-moon-stars-fill"></i> <span id="themeToggleText" class="d-none d-sm-inline">Oscuro</span>';
+                            }
+                        }
+
+                        const currentTheme = localStorage.getItem('theme') || (document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+                        applyTheme(currentTheme);
+
+                        themeBtn.onclick = function() {
+                            let isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                            applyTheme(isDark ? 'light' : 'dark');
+                        };
+                    }
+
+                    initToastAlerts();
+                }
+
+                function initToastAlerts() {
+                    const alerts = document.querySelectorAll('.toast-alert');
+                    alerts.forEach(alert => {
+                        if (!alert.querySelector('.toast-dismiss-btn')) {
+                            const closeBtn = document.createElement('button');
+                            closeBtn.type = 'button';
+                            closeBtn.className = 'toast-dismiss-btn';
+                            closeBtn.innerHTML = '&times;';
+                            closeBtn.setAttribute('aria-label', 'Cerrar');
+                            closeBtn.onclick = () => dismissToast(alert);
+                            alert.appendChild(closeBtn);
+                        }
+
+                        setTimeout(() => {
+                            dismissToast(alert);
+                        }, 4000);
+                    });
+                }
+
+                function dismissToast(alert) {
+                    if (!alert || alert.classList.contains('toast-dismissing')) return;
+                    alert.classList.add('toast-dismissing');
+                    setTimeout(() => {
+                        if (alert.parentNode) alert.parentNode.removeChild(alert);
+                    }, 350);
+                }
+
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', initNavbar);
+                } else {
+                    initNavbar();
+                }
+            })();
+        </script>
+    </nav>
+</body>
+</html>

@@ -1,24 +1,32 @@
 package com.proyecto.service;
 
-import com.proyecto.entity.Libro;
+import com.proyecto.dto.request.LibroRequestDTO;
+import com.proyecto.dto.response.LibroResponseDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.List;
-import java.util.Optional;
 
 public interface LibroService {
 
-    //buscar todos los libros
-    List<Libro> findAllLibros();
+    List<LibroResponseDTO> obtenerTodosLosLibros();
 
-    //buscar libro por id
-    Optional<Libro> findLibroById(Long iLibro);
+    Page<LibroResponseDTO> buscarLibrosConFiltros(String query, Long categoriaId, Long autorId, Long editorialId, Pageable pageable);
 
-    //guardar libro
-    Libro saveLibro(Libro libro);
+    LibroResponseDTO obtenerLibroPorId(Long id);
 
-    //actualizar
-    void updateLibro(Long idLibro, Libro libro);
+    LibroResponseDTO obtenerLibroPorIsbn(String isbn);
 
-    //delete
-    void deleteLibroById(Long idLibro);
+    LibroResponseDTO guardarLibro(LibroRequestDTO requestDTO);
 
+    LibroResponseDTO actualizarLibro(Long id, LibroRequestDTO requestDTO);
+
+    void eliminarLibroPorId(Long id);
+
+    // Métodos de compatibilidad temporal para migración progresiva
+    default java.util.List<LibroResponseDTO> findAllLibros() { return obtenerTodosLosLibros(); }
+    default java.util.Optional<com.proyecto.domain.entity.Libro> findLibroById(Long id) { return java.util.Optional.empty(); }
+    default com.proyecto.domain.entity.Libro saveLibro(com.proyecto.domain.entity.Libro libro) { return libro; }
+    default void updateLibro(Long id, com.proyecto.domain.entity.Libro libro) {}
+    default void deleteLibroById(Long id) { eliminarLibroPorId(id); }
 }

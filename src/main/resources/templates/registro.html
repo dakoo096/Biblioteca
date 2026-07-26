@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca SaaS - Registro de Lector</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Custom Design System -->
+    <link rel="stylesheet" th:href="@{/css/custom.css}" href="../static/css/custom.css">
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
+</head>
+<body class="d-flex flex-column min-vh-100 justify-content-center align-items-center bg-light">
+
+    <div class="container my-4" style="max-width: 480px;">
+        <!-- Header Logo -->
+        <div class="text-center mb-4">
+            <div class="brand-logo-wrapper mx-auto mb-3" style="width: 54px; height: 54px; font-size: 1.6rem;">
+                <i class="bi bi-person-plus-fill"></i>
+            </div>
+            <h2 class="h3 fw-bold text-dark mb-1">Crea tu Cuenta de Lector</h2>
+            <p class="text-muted fs-6">Accede al catálogo completo, realiza reservas y pide préstamos</p>
+        </div>
+
+        <!-- Card Form -->
+        <div class="form-card p-4 shadow-sm border-0 bg-white" style="border-radius: var(--radius-lg);">
+            
+            <div th:if="${errorMessage}" class="toast-alert toast-alert-error mb-3">
+                <i class="bi bi-exclamation-triangle-fill fs-5"></i>
+                <span th:text="${errorMessage}">Error de registro</span>
+            </div>
+
+            <form th:action="@{/registro}" th:object="${usuario}" method="post">
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label for="nombre" class="form-label font-weight-bold">Nombre</label>
+                        <input type="text" id="nombre" th:field="*{nombre}" class="form-control" placeholder="Ana" required>
+                        <div class="text-danger small" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="apellido" class="form-label font-weight-bold">Apellido</label>
+                        <input type="text" id="apellido" th:field="*{apellido}" class="form-control" placeholder="García" required>
+                        <div class="text-danger small" th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}"></div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label font-weight-bold">Correo Electrónico</label>
+                    <div class="search-box max-w-100" style="max-width: 100%;">
+                        <i class="bi bi-envelope"></i>
+                        <input type="email" id="email" th:field="*{email}" class="form-control" placeholder="tu.email@ejemplo.com" required>
+                    </div>
+                    <div class="text-danger small" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="telefono" class="form-label font-weight-bold">Teléfono de Contacto</label>
+                    <div class="search-box max-w-100" style="max-width: 100%;">
+                        <i class="bi bi-telephone"></i>
+                        <input type="text" id="telefono" th:field="*{telefono}" class="form-control" placeholder="+54 11 1234-5678">
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="password" class="form-label font-weight-bold">Contraseña</label>
+                    <div class="search-box max-w-100" style="max-width: 100%;">
+                        <i class="bi bi-lock"></i>
+                        <input type="password" id="password" th:field="*{password}" class="form-control" placeholder="Mínimo 6 caracteres" required minlength="6">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary-custom w-100 justify-content-center py-2 fs-6 mb-3">
+                    <i class="bi bi-check-circle-fill"></i> Registrarme e Iniciar
+                </button>
+            </form>
+
+            <div class="text-center pt-3 border-top">
+                <p class="text-muted mb-0">¿Ya tienes una cuenta? 
+                    <a th:href="@{/login}" class="text-primary fw-semibold text-decoration-none">Inicia sesión aquí</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            function initToastAlerts() {
+                const alerts = document.querySelectorAll('.toast-alert');
+                alerts.forEach(alert => {
+                    if (!alert.querySelector('.toast-dismiss-btn')) {
+                        const closeBtn = document.createElement('button');
+                        closeBtn.type = 'button';
+                        closeBtn.className = 'toast-dismiss-btn';
+                        closeBtn.innerHTML = '&times;';
+                        closeBtn.setAttribute('aria-label', 'Cerrar');
+                        closeBtn.onclick = () => dismissToast(alert);
+                        alert.appendChild(closeBtn);
+                    }
+
+                    setTimeout(() => {
+                        dismissToast(alert);
+                    }, 4000);
+                });
+            }
+
+            function dismissToast(alert) {
+                if (!alert || alert.classList.contains('toast-dismissing')) return;
+                alert.classList.add('toast-dismissing');
+                setTimeout(() => {
+                    if (alert.parentNode) alert.parentNode.removeChild(alert);
+                }, 350);
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initToastAlerts);
+            } else {
+                initToastAlerts();
+            }
+        })();
+    </script>
+</body>
+</html>

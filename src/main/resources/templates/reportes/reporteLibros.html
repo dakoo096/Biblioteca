@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Reporte de Inventario de Libros - Biblioteca SaaS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { font-family: sans-serif; background-color: white; color: #1e293b; padding: 30px; }
+        .report-header { border-bottom: 2px solid #0f172a; padding-bottom: 15px; margin-bottom: 25px; }
+        @media print {
+            .no-print { display: none !important; }
+            body { padding: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="no-print mb-4 d-flex justify-content-between align-items-center">
+        <a href="javascript:history.back()" class="btn btn-outline-secondary">← Volver</a>
+        <button onclick="window.print()" class="btn btn-primary"><i class="bi bi-printer"></i> Imprimir / Guardar como PDF</button>
+    </div>
+
+    <div class="report-header d-flex justify-content-between align-items-center">
+        <div>
+            <h1 class="h3 fw-bold mb-1">Biblioteca SaaS - Reporte Oficial</h1>
+            <p class="text-muted mb-0">Inventario General de Libros y Ejemplares</p>
+        </div>
+        <div class="text-end text-muted small">
+            <div>Fecha de emisión: <strong th:text="${fechaGeneracion}">26/07/2026</strong></div>
+            <div>Estado: Activo</div>
+        </div>
+    </div>
+
+    <table class="table table-bordered table-striped align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th># ID</th>
+                <th>Título</th>
+                <th>ISBN</th>
+                <th>Autor</th>
+                <th>Categoría</th>
+                <th>Stock Total</th>
+                <th>Disponibles</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="libro : ${libros}">
+                <td th:text="'#' + ${libro.id}">#1</td>
+                <td class="fw-bold" th:text="${libro.titulo}">Título</td>
+                <td th:text="${libro.isbn}">ISBN</td>
+                <td th:text="${libro.autor != null ? libro.autor.nombreCompleto : '-'}">Autor</td>
+                <td th:text="${libro.categoria != null ? libro.categoria.nombre : '-'}">Categoría</td>
+                <td th:text="${libro.cantidadTotal}">0</td>
+                <td class="fw-bold text-success" th:text="${libro.cantidadDisponible}">0</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="mt-4 text-muted small text-end border-top pt-2">
+        Documento generado automáticamente por el Sistema de Gestión Bibliotecaria Biblioteca SaaS.
+    </div>
+
+</body>
+</html>
