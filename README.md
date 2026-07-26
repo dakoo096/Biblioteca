@@ -47,13 +47,14 @@ Incluye funcionalidades completas de **CRUD**, **búsqueda**, **paginación** y 
 ---
 
 ## 🖼️ Capturas
-
-<img width="1920" height="953" alt="biblioteca6" src="https://github.com/user-attachments/assets/140fb331-92cd-456e-b48a-516c9a8babd9" />
-<img width="1920" height="954" alt="biblioteca5" src="https://github.com/user-attachments/assets/50c7da4f-5716-4990-8e63-e099fb0b5243" />
-<img width="1920" height="951" alt="biblioteca4" src="https://github.com/user-attachments/assets/49567dc2-901e-43ce-af3f-3d667f924782" />
-<img width="1920" height="952" alt="biblioteca3" src="https://github.com/user-attachments/assets/67defcaa-f8a2-429d-9e49-724a0dc242ed" />
-<img width="1920" height="951" alt="biblioteca2" src="https://github.com/user-attachments/assets/fa9afd71-4392-4863-a547-2a47313c2b3d" />
-<img width="1920" height="954" alt="biblioteca1" src="https://github.com/user-attachments/assets/bfdcc072-0cc2-4855-99ff-5b35f55c12ea" />
+<img width="1917" height="935" alt="image" src="https://github.com/user-attachments/assets/693bd6f8-854c-4bbb-98f6-2c01a9093e29" />
+<img width="1901" height="939" alt="image" src="https://github.com/user-attachments/assets/2cdd2471-eb1d-456f-b086-3c3f24ea4928" />
+<img width="1919" height="942" alt="image" src="https://github.com/user-attachments/assets/f12750e9-e693-4709-aba8-6f92b7c7a834" />
+<img width="1919" height="942" alt="image" src="https://github.com/user-attachments/assets/d6992046-50fd-48c8-a4f0-f533deaff05f" />
+<img width="1917" height="945" alt="image" src="https://github.com/user-attachments/assets/ad137e15-060b-4784-9377-2c28ebd8f5d9" />
+<img width="1919" height="940" alt="image" src="https://github.com/user-attachments/assets/4ec3fc02-8d12-4a0d-9b9c-61ac47a88da4" />
+<img width="1919" height="943" alt="image" src="https://github.com/user-attachments/assets/9553fa66-830b-4fef-9ed6-72a6231c49a7" />
+<img width="1919" height="944" alt="image" src="https://github.com/user-attachments/assets/3d064365-6f92-4d9d-b445-87fe09d879d9" />
 
 
 ---
